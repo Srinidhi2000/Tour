@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:textSize="28sp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center_horizontal"
+        />
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Enter a username"
+    android:id="@+id/register_username"
+    android:inputType="textPersonName"
+    />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint=" Enter Password"
+        android:inputType="text"
+        android:layout_marginTop="20dp"
+        android:id="@+id/register_password"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint=" Confirm Password"
+        android:inputType="textPassword"
+        android:layout_marginTop="20dp"
+        android:id="@+id/confirmpassword"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="submitRegister"
+        android:id="@+id/submitLogin"
+        android:text="REGISTER"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already an existing user?"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login here"
+        android:layout_gravity="center_horizontal"
+        android:onClick="backtologin"/>
+
+</LinearLayout>
