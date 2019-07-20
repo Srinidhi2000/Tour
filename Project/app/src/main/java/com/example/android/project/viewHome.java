@@ -13,18 +13,19 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.android.project.login.MainActivity;
+import com.example.android.project.places.display_places;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -38,8 +39,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
-public class viewHome extends AppCompatActivity {
+//Homepage
+public class viewHome extends AppCompatActivity implements View.OnClickListener {
     boolean locationpermission = false;
     public static double latitude;
     public static double longitude;
@@ -49,13 +50,33 @@ public class viewHome extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 102;
     private FusedLocationProviderClient fusedLocation;
     TextView curlocationtext,setcurloc;
+    EditText search;
  static int setToCurrentLoc=0;
+ LinearLayout topPicks,food,shopping;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
         setcurloc=findViewById(R.id.setCurLoc);
         curlocationtext=findViewById(R.id.curLocationText);
+        topPicks=findViewById(R.id.topPicks);
+        topPicks.setOnClickListener(this);
+        food=findViewById(R.id.food);
+        food.setOnClickListener(this);
+        shopping=findViewById(R.id.shopping);
+        shopping.setOnClickListener(this);
+        search=findViewById(R.id.search_edittext);
+        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Intent intent=new Intent(viewHome.this,display_places.class);
+                intent.putExtra("type",search.getText().toString());
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lon",longitude);
+                startActivity(intent);
+                return false;
+            }
+        });
         fusedLocation = LocationServices.getFusedLocationProviderClient(this);
     setcurloc.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -65,7 +86,7 @@ public class viewHome extends AppCompatActivity {
         }
     });
     }
-
+//to check if current location to be displayed or there is a change in the map
 private void preferLocation()
 {
    if(setToCurrentLoc==0)
@@ -75,28 +96,15 @@ private void preferLocation()
     }
 else
    { if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-       // TODO: Consider calling
-       //    Activity#requestPermissions
-       // here to request the missing permissions, and then overriding
-       //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-       //                                          int[] grantResults)
-       // to handle the case where the user grants the permission. See the documentation
-       // for Activity#requestPermissions for more details.
        return;
    }
     getdetails();
    }
 }
+//To get the last known location
     private void getLastLocation() {
 
         if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
             return;
         }
         fusedLocation.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
@@ -111,19 +119,12 @@ else
             }
         });
     }
+    //To get the address to be displayed
     private void getdetails()
     { Geocoder geocoder=new Geocoder(viewHome.this, Locale.getDefault());
     try{
         List<Address> addresses=geocoder.getFromLocation(latitude,longitude,1);
       Address address=addresses.get(0);
-       /* String locationName = address.getAddressLine(0);
-        locationName = locationName + "\n" + address.getCountryName();
-        locationName = locationName + "\n" + address.getCountryCode();
-        locationName = locationName + "\n" + address.getAdminArea();
-        locationName = locationName + "\n" + address.getPostalCode();
-        locationName = locationName + "\n" + address.getSubAdminArea();
-        locationName = locationName + "\n" + address.getLocality();
-        locationName = locationName + "\n" + address.getSubThoroughfare();*/
        String locationName=address.getLocality()+","+address.getAdminArea()+","+address.getCountryName();
    Log.v("Address","LocationName"+locationName);
 curlocationtext.setText(locationName);
@@ -132,7 +133,7 @@ curlocationtext.setText(locationName);
     }
 
     }
-
+//Checks if location is enabled and whether the app can use GPS
     private boolean checkMapServices(){
         if(isServicesOK()){
             if(isMapsEnabled()){
@@ -141,7 +142,7 @@ curlocationtext.setText(locationName);
         }
         return false;
     }
-
+//Show a dialog box if GPS is not enabled
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
@@ -176,7 +177,7 @@ curlocationtext.setText(locationName);
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationpermission = true;
-            getChatrooms();
+            getPlace();
             preferLocation();
 
         } else {
@@ -192,12 +193,10 @@ curlocationtext.setText(locationName);
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(viewHome.this);
 
         if(available == ConnectionResult.SUCCESS){
-            //everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
         }
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //an error occured but we can resolve it
             Log.d(TAG, "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(viewHome.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
@@ -214,7 +213,6 @@ curlocationtext.setText(locationName);
         locationpermission = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationpermission = true;
@@ -230,7 +228,7 @@ curlocationtext.setText(locationName);
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if(locationpermission){
-                    getChatrooms();
+                    getPlace();
                    preferLocation();
                 }
                 else{
@@ -240,12 +238,13 @@ curlocationtext.setText(locationName);
         }
 
     }
-    private void getChatrooms()
+    private void getPlace()
     {
         curlocationtext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(viewHome.this,MapsActivity.class);
+                intent.putExtra("use","display");
                 startActivity(intent);
             }
         });
@@ -256,7 +255,7 @@ curlocationtext.setText(locationName);
         super.onResume();
         if(checkMapServices()){
             if(locationpermission){
-                getChatrooms();
+                getPlace();
                 preferLocation();
             }
             else{
@@ -267,5 +266,36 @@ curlocationtext.setText(locationName);
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id= v.getId();
+        switch(id)
+        {
+            case R.id.topPicks:
+            {Intent intent=new Intent(viewHome.this,display_places.class);
+                intent.putExtra("type","top");
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lon",longitude);
+                startActivity(intent);
+                break;}
+            case R.id.food: {
+                Intent intent2 = new Intent(viewHome.this, display_places.class);
+                intent2.putExtra("type", "food");
+                intent2.putExtra("lat",latitude);
+                intent2.putExtra("lon",longitude);
+                startActivity(intent2);
+                break;
+            }
+                case R.id.shopping: {
+                    Intent intent3 = new Intent(viewHome.this, display_places.class);
+                    intent3.putExtra("type", "shopping");
+                    intent3.putExtra("lat",latitude);
+                    intent3.putExtra("lon",longitude);
+                    startActivity(intent3);
+                    break;
+                }
+                }
     }
 }

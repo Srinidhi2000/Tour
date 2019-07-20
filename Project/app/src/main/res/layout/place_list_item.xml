@@ -1,0 +1,85 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp"
+    android:id="@+id/list_item_view">
+    <TextView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        tools:text="NA"
+        android:textSize="16sp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rate_circle"
+        android:id="@+id/rating" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            tools:text="Name"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:id="@+id/name"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category: "
+            android:textColor="@android:color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Category"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:id="@+id/category"
+            />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Address"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:id="@+id/address"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Timings NA"
+            android:layout_gravity="end"
+            android:id="@+id/open"
+            android:textSize="12sp"
+            />
+    </LinearLayout>
+</LinearLayout>

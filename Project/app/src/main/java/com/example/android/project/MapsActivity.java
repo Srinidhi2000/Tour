@@ -5,19 +5,15 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -25,11 +21,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private MapView mMapView;
@@ -48,18 +42,16 @@ RelativeLayout address_bar;
         search_address=findViewById (R.id.search_address);
         address_bar=findViewById(R.id.searchaddress_bar);
         address_bar.setVisibility(View.GONE);
-        // *** IMPORTANT ***
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-        mMapView = (MapView) findViewById(R.id.user_map);
+        mMapView =  findViewById(R.id.user_map);
         mMapView.onCreate(mapViewBundle);
         mMapView.getMapAsync(this);
 
     }
+    //To zoom in and set the marker at the location specified
   private void setCameraview() {
         double bottom = latitude - .1;
         double left = longitude - .1;
@@ -104,6 +96,7 @@ RelativeLayout address_bar;
         super.onStop();
         mMapView.onStop();
     }
+    // Checks if the user types in a location or wants the current location
 private void setLocation()
 {
     search_address.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -118,22 +111,14 @@ getdetails();
         }
     });
 }
+//If the user types a location then the function gets the lat and lng coordinates of the place
     private void getdetails()
     { Geocoder geocoder=new Geocoder(MapsActivity.this);
       String searchString=search_address.getText().toString();
         List<Address> addresses=new ArrayList<>();
 
         try{ addresses=geocoder.getFromLocationName(searchString,1);
-
-       /* String locationName = address.getAddressLine(0);
-        locationName = locationName + "\n" + address.getCountryName();
-        locationName = locationName + "\n" + address.getCountryCode();
-        locationName = locationName + "\n" + address.getAdminArea();
-        locationName = locationName + "\n" + address.getPostalCode();
-        locationName = locationName + "\n" + address.getSubAdminArea();
-        locationName = locationName + "\n" + address.getLocality();
-        locationName = locationName + "\n" + address.getSubThoroughfare();*/
-           } catch (IOException e) {
+          } catch (IOException e) {
             e.printStackTrace();
         }
         if(addresses.size()>0)
@@ -152,13 +137,6 @@ getdetails();
     @Override
     public void onMapReady(GoogleMap map) {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
             return;
         }
         View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));

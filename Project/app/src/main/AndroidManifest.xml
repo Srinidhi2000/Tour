@@ -25,7 +25,11 @@
         </activity>
         <activity android:name=".login.Register"/>
         <activity android:name=".viewHome"/>
+        <activity android:name=".places.display_places"
+            android:parentActivityName=".viewHome"/>
         <activity android:name=".MapsActivity"
+            android:parentActivityName=".viewHome"/>
+        <activity android:name=".specificvenue.venueDetailsActivity"
             android:parentActivityName=".viewHome"/>
    <provider
        android:authorities="com.example.android.project"

@@ -16,7 +16,7 @@ import com.example.android.project.data.contract;
 import com.example.android.project.viewHome;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+//Login page
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 private static final int LOGIN_LOADER=1;
 EditText username,password;
