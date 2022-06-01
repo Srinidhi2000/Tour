@@ -7,16 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.project.R;
+import com.example.android.project.diary;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,10 +39,12 @@ import androidx.core.app.ActivityCompat;
 public class venueDetailsActivity extends AppCompatActivity  {
     private static  String SPECIFIC_VENUE="null";
     ProgressBar loading;
+    String id;
     TextView condition,temp;
     TextView empty,description,url,phone,address,category,rating,status;
     LinearLayout details,weather;
-    String name;
+     public static String name,address_text,category_text;
+    ImageView bookmark;
     private static final int PLACE_LOADER_ID=1;
     private static final int WEATHER_LOADER_ID=2;
     private MapView mMapView;
@@ -56,6 +61,7 @@ public class venueDetailsActivity extends AppCompatActivity  {
         setContentView(R.layout.venue_details);
         empty=findViewById(R.id.empty);
         loading=findViewById(R.id.loading);
+        bookmark=findViewById(R.id.bookmark);
         description=findViewById(R.id.description);
         url=findViewById(R.id.url);
         phone=findViewById(R.id.phone);
@@ -70,7 +76,7 @@ public class venueDetailsActivity extends AppCompatActivity  {
         details.setVisibility(View.GONE);
         weather.setVisibility(View.GONE);
         Intent intent=getIntent();
-        String id=intent.getStringExtra("ID");
+        id=intent.getStringExtra("ID");
         SPECIFIC_VENUE="https://api.foursquare.com/v2/venues/"+id+"?client_id="+
                 getString(R.string.CLIENT_ID)+"&client_secret="+getString(R.string.CLIENT_PASS);
         String date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
@@ -139,7 +145,9 @@ condition.setText(data.getCondition());
                 latitude=Double.parseDouble(data.getLatitude());
                 longitude=Double.parseDouble(data.getLongitude());
                 address.setText(data.getAddress());
+                address_text=data.getAddress();
                 category.setText(data.getCategory());
+                category_text=data.getCategory();
                 rating.setText(data.getRating());
                 description.setText(data.getDescription());
                 status.setText(data.getStatus());
@@ -241,5 +249,14 @@ condition.setText(data.getCondition());
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    public void diary(View view)
+    {Intent intent=new Intent(venueDetailsActivity.this,diary.class);
+    intent.putExtra("bookmark",false);
+    intent.putExtra("UserID",id);
+    intent.putExtra("name",name);
+    startActivity(intent);
+
     }
 }

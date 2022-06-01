@@ -98,9 +98,8 @@ loading.setVisibility(View.GONE);
 adapter.clear();
 Empty.setText("No nearby places found");
 if(data!=null&&!data.isEmpty())
-{
-    adapter.addAll(data);
-    Empty.setVisibility(View.GONE);
+{ adapter.addAll(data);
+  Empty.setVisibility(View.GONE);
 }
     }
 

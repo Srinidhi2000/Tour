@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 private static final int LOGIN_LOADER=1;
 EditText username,password;
    int checkusername=0;
+public static  String USERNAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ EditText username,password;
         setContentView(R.layout.activity_main);
     username=findViewById(R.id.username);
     password=findViewById(R.id.password);
-    }
+      }
     //Check the database for the user
     public void submitLogin(View view)
     { if(TextUtils.isEmpty(username.getText()))
@@ -40,7 +41,7 @@ EditText username,password;
         password.setError("Enter password");
     }
     else
-        getLoaderManager().restartLoader(LOGIN_LOADER,null,this);
+    {    getLoaderManager().restartLoader(LOGIN_LOADER,null,this);}
     }
     //If new user
     public void Register(View view)
@@ -66,10 +67,10 @@ EditText username,password;
              checkusername=0;
              while (data.moveToNext()) {
 
-                 if (data.getString(usernameIndex).equals(username.getText().toString()))
+                 if (data.getString(usernameIndex)!=null&&data.getString(usernameIndex).equals(username.getText().toString()))
              { checkusername++;
-                 if (data.getString(passwordIndex).equals(password.getText().toString()))
-                 {
+                 if (data.getString(passwordIndex)!=null&&data.getString(passwordIndex).equals(password.getText().toString()))
+                 { USERNAME=username.getText().toString();
                      Intent intent2 = new Intent(MainActivity.this, viewHome.class);
                      startActivity(intent2);
                      break;
@@ -77,6 +78,7 @@ EditText username,password;
                  else
                  {
                      Toast.makeText(this, "Incorrect Password", Toast.LENGTH_SHORT).show();
+                     password.setText("");
                      break;
                  }
              }}

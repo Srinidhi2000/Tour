@@ -14,6 +14,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.android.project.login.MainActivity;
 import com.example.android.project.places.display_places;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -125,9 +129,19 @@ else
     try{
         List<Address> addresses=geocoder.getFromLocation(latitude,longitude,1);
       Address address=addresses.get(0);
-       String locationName=address.getLocality()+","+address.getAdminArea()+","+address.getCountryName();
-   Log.v("Address","LocationName"+locationName);
-curlocationtext.setText(locationName);
+        String locationName;
+      if(address.getLocality()==null)
+      { if(address.getAdminArea()==null)
+      {
+          locationName=address.getCountryName();
+      }
+      else
+          locationName=address.getAdminArea()+","+address.getCountryName();
+      }
+      else
+          {
+              locationName=address.getLocality()+","+address.getAdminArea()+","+address.getCountryName();}
+              curlocationtext.setText(locationName);
     } catch (IOException e) {
         e.printStackTrace();
     }
@@ -297,5 +311,25 @@ curlocationtext.setText(locationName);
                     break;
                 }
                 }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+int id=item.getItemId();
+if(id==R.id.signout)
+{Intent intent=new Intent(viewHome.this,MainActivity.class);
+startActivity(intent);}
+if(id==R.id.markedPlaces)
+{ Intent intent=new Intent(viewHome.this,markedPlaces_list.class);
+startActivity(intent);
+}
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -33,8 +33,7 @@ public class places_provider extends ContentProvider {
         Cursor cursor;
         int match=urimatcher.match(uri);
         switch(match)
-        {
-            case PLACES:
+        {  case PLACES:
                 cursor=database.query(contract.loginEntry.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
             break;
                 case PLACE_ITEM:
@@ -76,8 +75,18 @@ public class places_provider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri,  String selection,  String[] selectionArgs) {
-        return 0;
+    public int delete(@NonNull Uri uri,  String selection,  String[] selectionArgs)
+    {
+        SQLiteDatabase database=dbhelper.getWritableDatabase();
+        selection=contract.loginEntry.rowid+"=?";
+        selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+        int rows=database.delete(contract.loginEntry.TABLE_NAME,selection,selectionArgs);
+        if(rows!=0)
+        {
+            getContext().getContentResolver().notifyChange(uri,null);
+        }
+
+        return rows;
     }
 
     @Override

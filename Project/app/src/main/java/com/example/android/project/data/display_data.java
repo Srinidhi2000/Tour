@@ -17,7 +17,16 @@ public class display_data extends SQLiteOpenHelper {
 String table="CREATE TABLE " + contract.loginEntry.TABLE_NAME + " ("
         + contract.loginEntry.rowid +" INTEGER PRIMARY KEY AUTOINCREMENT, "
         + contract.loginEntry.c1username + " TEXT, "
-        + contract.loginEntry.c2password +" TEXT);";
+        + contract.loginEntry.c2password +" TEXT, "
+        + contract.loginEntry.c3rating +" TEXT, "
+        +contract.loginEntry.c4visited +" TEXT, "
+        +contract.loginEntry.c5from_time +" TEXT, "
+        +contract.loginEntry.c6to_time +" TEXT, "
+        +contract.loginEntry.c7info +" TEXT, "
+        +contract.loginEntry.c8name +" TEXT, "
+        +contract.loginEntry.c9category +" TEXT, "
+        +contract.loginEntry.c10address +" TEXT, "
+        +contract.loginEntry.c11id +" TEXT);";
 db.execSQL(table);
     }
 

@@ -38,9 +38,20 @@
                 android:id="@+id/open"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/bookmark"
+                android:layout_marginRight="8dp"
                 android:textSize="18sp"
-                tools:text="OPEN" />
+                tools:text="OPEN"
+                android:layout_toStartOf="@id/bookmark"
+                android:layout_marginEnd="4dp" />
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/bookmark"
+               android:layout_alignParentRight="true"
+                android:id="@+id/bookmark"
+                android:onClick="diary"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <LinearLayout
@@ -162,7 +173,7 @@
     <com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/venue_map"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_below="@id/weatherReport"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="8dp" />

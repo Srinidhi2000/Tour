@@ -31,10 +31,6 @@ public class placesAdapter extends ArrayAdapter<Place> {
         TextView category=(TextView)listitemView.findViewById(R.id.category);
         TextView name=(TextView)listitemView.findViewById(R.id.name);
         TextView address=(TextView)listitemView.findViewById(R.id.address);
-        TextView status=(TextView)listitemView.findViewById(R.id.open);
-        TextView rating=(TextView)listitemView.findViewById(R.id.rating);
-         status.setText(current.getOpen());
-         rating.setText(current.getRating());
         category.setText(current.getCategories());
         name.setText(current.getName());
         address.setText(current.getLocation());

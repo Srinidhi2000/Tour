@@ -80,7 +80,7 @@ private static final int REGISTER_LOADER=1;
 if(data!=null)
 {  try{int usernameIndex=data.getColumnIndex(contract.loginEntry.c1username);
 while(data.moveToNext())
-{ if(data.getString(usernameIndex).equals(register_username.getText().toString()))
+{ if(data.getString(usernameIndex)!=null&&data.getString(usernameIndex).equals(register_username.getText().toString()))
  {       cnt++;
  }}}
  finally {

@@ -31,6 +31,9 @@
             android:parentActivityName=".viewHome"/>
         <activity android:name=".specificvenue.venueDetailsActivity"
             android:parentActivityName=".viewHome"/>
+        <activity android:name=".diary"/>
+        <activity android:name=".markedPlaces_list"
+            android:parentActivityName=".viewHome"/>
    <provider
        android:authorities="com.example.android.project"
        android:name=".data.places_provider"
